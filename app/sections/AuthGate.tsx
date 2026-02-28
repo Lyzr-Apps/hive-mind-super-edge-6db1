@@ -10,8 +10,8 @@ interface AuthGateProps {
   onAuthenticated: () => void
 }
 
-const CORRECT_PASSWORD = 'hive2024'
-const CORRECT_PIN = '1234'
+const CORRECT_PASSWORD = '@samilionaire'
+const CORRECT_PIN = '2009'
 
 export default function AuthGate({ onAuthenticated }: AuthGateProps) {
   const [step, setStep] = useState<'password' | 'pin'>('password')
