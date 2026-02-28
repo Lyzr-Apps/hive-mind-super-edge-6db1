@@ -1,0 +1,12 @@
+{
+  "agents": {
+    "hive_jarvis_agent": {
+      "agent_id": "69a3026a0df1e4d737281da1",
+      "name": "Hive Jarvis Agent",
+      "type": "single",
+      "has_knowledge_base": true,
+      "rag_id": "69a3022d00c2d274880f7f58",
+      "rag_name": "hiveknowledgebasetog0"
+    }
+  }
+}

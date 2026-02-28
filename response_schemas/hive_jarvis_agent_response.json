@@ -1,0 +1,28 @@
+{
+  "agent_name": "Hive Jarvis Agent",
+  "agent_id": "69a3026a0df1e4d737281da1",
+  "description": "Your personal executive AI assistant. Searches all Hive documentation to answer questions, provide strategic advice, execute tasks (drafting, summarizing, planning), and retrieve precise document intelligence. Addresses you personally, maintains conversational memory, and adapts to your working style.",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "response": "string",
+    "sources": [
+      "string"
+    ],
+    "action_items": [
+      "string"
+    ],
+    "category": "string"
+  },
+  "example_response": {
+    "response": "The main response text from Jarvis with document citations",
+    "sources": [
+      "sample string"
+    ],
+    "action_items": [
+      "sample string"
+    ],
+    "category": "Category of the query: strategy, operations, technical, content, analytics, or general"
+  }
+}
