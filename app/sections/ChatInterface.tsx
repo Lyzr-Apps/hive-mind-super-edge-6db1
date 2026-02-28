@@ -150,10 +150,10 @@ export default function ChatInterface({ sessionId, messages, onMessagesUpdate, o
               <RiRobot2Line className="w-10 h-10 text-primary" />
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-foreground mb-2">
-              {getGreeting()}, Commander.
+              {getGreeting()}, Greatness.
             </h2>
             <p className="text-muted-foreground leading-relaxed">
-              What are we working on today? Ask me anything about your knowledge base, strategy, or operations.
+              I'm Nyx, your personal AI executive. What are we working on today? Ask me anything about your knowledge base, strategy, or operations.
             </p>
           </div>
         )}
@@ -244,7 +244,7 @@ export default function ChatInterface({ sessionId, messages, onMessagesUpdate, o
                     <div className="w-2 h-2 rounded-full bg-primary animate-bounce" />
                     <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0.15s' }} />
                     <div className="w-2 h-2 rounded-full bg-primary animate-bounce" style={{ animationDelay: '0.3s' }} />
-                    <span className="text-sm text-muted-foreground ml-2">Jarvis is thinking...</span>
+                    <span className="text-sm text-muted-foreground ml-2">Nyx is thinking...</span>
                   </div>
                 </CardContent>
               </Card>
@@ -261,7 +261,7 @@ export default function ChatInterface({ sessionId, messages, onMessagesUpdate, o
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask Jarvis..."
+              placeholder="Ask Nyx..."
               rows={1}
               className="w-full resize-none bg-input border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring max-h-32 overflow-y-auto"
               style={{ minHeight: '48px' }}

@@ -86,7 +86,7 @@ export default function PinnedResponses({ pinned, onUnpin }: PinnedResponsesProp
             <CardContent className="flex flex-col items-center justify-center py-16 text-center">
               <RiPushpinLine className="w-12 h-12 text-muted-foreground mb-4" />
               <h3 className="font-semibold text-foreground mb-1">No pinned responses yet</h3>
-              <p className="text-sm text-muted-foreground max-w-sm">Pin important Jarvis responses for quick access.</p>
+              <p className="text-sm text-muted-foreground max-w-sm">Pin important Nyx responses for quick access.</p>
             </CardContent>
           </Card>
         ) : (

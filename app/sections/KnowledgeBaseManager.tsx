@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Progress } from '@/components/ui/progress'
-import { getDocuments, uploadAndTrainDocument, deleteDocuments } from '@/lib/ragKnowledgeBase'
+import { Separator } from '@/components/ui/separator'
+import { getDocuments, uploadAndTrainDocument, deleteDocuments, crawlWebsite } from '@/lib/ragKnowledgeBase'
 import {
   RiDatabase2Line,
   RiFileTextLine,
@@ -20,6 +21,8 @@ import {
   RiLoader4Line,
   RiCheckLine,
   RiCloseLine,
+  RiGlobalLine,
+  RiLinkLine,
 } from 'react-icons/ri'
 
 const RAG_ID = '69a3022d00c2d274880f7f58'
@@ -43,6 +46,8 @@ export default function KnowledgeBaseManager() {
   const [dragOver, setDragOver] = useState(false)
   const [deletingFile, setDeletingFile] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [crawlUrl, setCrawlUrl] = useState('')
+  const [crawling, setCrawling] = useState(false)
 
   const fetchDocs = useCallback(async () => {
     setLoading(true)
@@ -123,6 +128,31 @@ export default function KnowledgeBaseManager() {
     }
   }, [fetchDocs])
 
+  const handleCrawlWebsite = useCallback(async () => {
+    if (!crawlUrl.trim()) return
+    let url = crawlUrl.trim()
+    if (!url.startsWith('http')) url = 'https://' + url
+
+    setCrawling(true)
+    setError('')
+    setSuccess('')
+    try {
+      const result = await crawlWebsite(RAG_ID, url)
+      if (result.success) {
+        setSuccess(`Website "${url}" is being crawled and added to your knowledge base.`)
+        setCrawlUrl('')
+        setTimeout(() => setSuccess(''), 5000)
+        fetchDocs()
+      } else {
+        setError(result.error || 'Failed to crawl website.')
+      }
+    } catch {
+      setError('Failed to crawl website.')
+    } finally {
+      setCrawling(false)
+    }
+  }, [crawlUrl, fetchDocs])
+
   const onDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
     setDragOver(false)
@@ -165,44 +195,80 @@ export default function KnowledgeBaseManager() {
           />
         </div>
 
-        <div
-          onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={onDrop}
-          onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all duration-200 ${dragOver ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50 hover:bg-secondary/30'}`}
-        >
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".pdf,.docx,.txt"
-            multiple
-            className="hidden"
-            onChange={(e) => e.target.files && handleUpload(e.target.files)}
-          />
-          <RiUploadCloud2Line className={`w-8 h-8 mx-auto mb-2 ${dragOver ? 'text-primary' : 'text-muted-foreground'}`} />
-          <p className="text-sm text-muted-foreground">
-            {uploading ? 'Uploading...' : 'Drag files here or click to upload'}
-          </p>
-          <p className="text-xs text-muted-foreground mt-1">.pdf, .docx, .txt accepted</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+          <div
+            onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
+            onDragLeave={() => setDragOver(false)}
+            onDrop={onDrop}
+            onClick={() => fileInputRef.current?.click()}
+            className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all duration-200 ${dragOver ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50 hover:bg-secondary/30'}`}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,.docx,.txt"
+              multiple
+              className="hidden"
+              onChange={(e) => e.target.files && handleUpload(e.target.files)}
+            />
+            <RiUploadCloud2Line className={`w-7 h-7 mx-auto mb-2 ${dragOver ? 'text-primary' : 'text-muted-foreground'}`} />
+            <p className="text-sm text-muted-foreground">
+              {uploading ? 'Uploading...' : 'Drag files or click to upload'}
+            </p>
+            <p className="text-xs text-muted-foreground mt-1">.pdf, .docx, .txt</p>
+          </div>
+
+          <Card className="bg-card border-border">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <RiGlobalLine className="w-4 h-4 text-primary" />
+                <h3 className="text-sm font-semibold text-foreground">Crawl Website</h3>
+              </div>
+              <p className="text-xs text-muted-foreground mb-3">Add any website content to your knowledge base</p>
+              <div className="flex gap-2">
+                <div className="flex-1 relative">
+                  <RiLinkLine className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+                  <Input
+                    placeholder="https://example.com"
+                    value={crawlUrl}
+                    onChange={(e) => setCrawlUrl(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleCrawlWebsite()}
+                    className="pl-9 bg-input border-border text-foreground placeholder:text-muted-foreground text-sm h-9"
+                  />
+                </div>
+                <Button
+                  size="sm"
+                  onClick={handleCrawlWebsite}
+                  disabled={!crawlUrl.trim() || crawling}
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground h-9 px-3"
+                >
+                  {crawling ? (
+                    <RiLoader4Line className="w-4 h-4 animate-spin" />
+                  ) : (
+                    'Crawl'
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {uploading && (
-          <div className="mt-3">
+          <div className="mb-3">
             <Progress value={uploadProgress} className="h-2" />
             <p className="text-xs text-muted-foreground mt-1 text-center">{uploadProgress}% uploaded</p>
           </div>
         )}
 
         {error && (
-          <div className="mt-3 p-3 rounded-xl bg-destructive/10 border border-destructive/20 flex items-center gap-2">
+          <div className="mb-3 p-3 rounded-xl bg-destructive/10 border border-destructive/20 flex items-center gap-2">
             <RiCloseLine className="w-4 h-4 text-destructive flex-shrink-0" />
             <p className="text-sm text-destructive">{error}</p>
           </div>
         )}
 
         {success && (
-          <div className="mt-3 p-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center gap-2">
+          <div className="mb-3 p-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center gap-2">
             <RiCheckLine className="w-4 h-4 text-green-400 flex-shrink-0" />
             <p className="text-sm text-green-400">{success}</p>
           </div>
@@ -223,7 +289,7 @@ export default function KnowledgeBaseManager() {
                 {search ? 'No matching documents' : 'No documents yet'}
               </h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                {search ? 'Try a different search term.' : 'Upload documents to build your knowledge base.'}
+                {search ? 'Try a different search term.' : 'Upload documents or crawl websites to build your knowledge base.'}
               </p>
             </CardContent>
           </Card>

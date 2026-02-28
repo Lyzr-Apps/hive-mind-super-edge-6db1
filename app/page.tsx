@@ -16,6 +16,9 @@ import ConversationHistory from './sections/ConversationHistory'
 import type { Conversation } from './sections/ConversationHistory'
 import PinnedResponses from './sections/PinnedResponses'
 import type { PinnedResponse } from './sections/PinnedResponses'
+import RivalTracker from './sections/RivalTracker'
+import AnalyticsDashboard from './sections/AnalyticsDashboard'
+import EventsTracker from './sections/EventsTracker'
 
 const AGENT_ID = '69a3026a0df1e4d737281da1'
 const STORAGE_KEY_CONVOS = 'hive_conversations'
@@ -65,7 +68,7 @@ const SAMPLE_MESSAGES: ChatMessage[] = [
   },
   {
     role: 'agent',
-    content: '## Q4 Revenue Strategy Overview\n\nBased on the knowledge base documents, here are the key strategic pillars for Q4:\n\n### 1. Enterprise Expansion\n- Focus on upselling to existing enterprise accounts\n- Target **30% increase** in average contract value\n- Launch dedicated enterprise success team\n\n### 2. Product-Led Growth\n- Implement self-serve onboarding for SMB segment\n- Reduce time-to-value from 14 days to **3 days**\n\n### 3. Strategic Partnerships\n- Finalize integration partnerships with top 5 platforms\n- Co-marketing campaigns with **3 key partners**\n\n**Projected Impact:** 25-35% revenue increase vs Q3.',
+    content: '## Q4 Revenue Strategy Overview\n\nGreatness, here are the key strategic pillars I\'ve identified for Q4:\n\n### 1. Enterprise Expansion\n- Focus on upselling to existing enterprise accounts\n- Target **30% increase** in average contract value\n- Launch dedicated enterprise success team\n\n### 2. Product-Led Growth\n- Implement self-serve onboarding for SMB segment\n- Reduce time-to-value from 14 days to **3 days**\n\n### 3. Strategic Partnerships\n- Finalize integration partnerships with top 5 platforms\n- Co-marketing campaigns with **3 key partners**\n\n**Projected Impact:** 25-35% revenue increase vs Q3. I\'ll keep tracking these metrics for you, Greatness.',
     category: 'strategy',
     sources: ['Q4_Strategy_Deck.pdf', 'Revenue_Targets_2024.docx'],
     action_items: [
@@ -82,7 +85,7 @@ const SAMPLE_MESSAGES: ChatMessage[] = [
   },
   {
     role: 'agent',
-    content: '## Technical Roadmap Priorities\n\nHere is a summary of the current technical priorities:\n\n- **API v3 Migration:** Complete by end of November. All legacy endpoints deprecated.\n- **Performance Optimization:** Target sub-200ms response times for core endpoints.\n- **Security Audit:** Third-party penetration testing scheduled for October.\n- **Infrastructure:** Migration to multi-region deployment for improved latency.\n\nThe engineering team is on track with **78% of Q4 milestones** completed or in progress.',
+    content: '## Technical Roadmap Priorities\n\nGreatness, here is a summary of the current technical priorities:\n\n- **API v3 Migration:** Complete by end of November. All legacy endpoints deprecated.\n- **Performance Optimization:** Target sub-200ms response times for core endpoints.\n- **Security Audit:** Third-party penetration testing scheduled for October.\n- **Infrastructure:** Migration to multi-region deployment for improved latency.\n\nThe engineering team is on track with **78% of Q4 milestones** completed or in progress. I recommend we review the API migration progress in the next standup, Greatness.',
     category: 'technical',
     sources: ['Engineering_Roadmap_Q4.pdf'],
     action_items: [
@@ -244,6 +247,9 @@ export default function Page() {
               <RiHexagonLine className="w-5 h-5 text-primary" />
               <span className="text-sm font-semibold tracking-tight text-foreground">
                 {activeView === 'chat' && 'Dashboard'}
+                {activeView === 'analytics' && 'Hive Analytics'}
+                {activeView === 'events' && 'Events Tracker'}
+                {activeView === 'rivals' && 'Rival Intelligence'}
                 {activeView === 'knowledge' && 'Knowledge Base'}
                 {activeView === 'history' && 'History'}
                 {activeView === 'pinned' && 'Pinned'}
@@ -272,6 +278,9 @@ export default function Page() {
                 onAgentActivity={setActiveAgentId}
               />
             )}
+            {activeView === 'analytics' && <AnalyticsDashboard />}
+            {activeView === 'events' && <EventsTracker />}
+            {activeView === 'rivals' && <RivalTracker />}
             {activeView === 'knowledge' && <KnowledgeBaseManager />}
             {activeView === 'history' && (
               <ConversationHistory
@@ -289,7 +298,7 @@ export default function Page() {
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <RiRobot2Line className="w-3.5 h-3.5 text-primary" />
-                <span className="text-xs text-muted-foreground font-medium">Hive Jarvis Agent</span>
+                <span className="text-xs text-muted-foreground font-medium">Hive Nyx Agent</span>
               </div>
               <Badge variant="secondary" className={`text-xs border-0 px-2 py-0 ${activeAgentId === AGENT_ID ? 'bg-yellow-500/10 text-yellow-400' : 'bg-green-500/10 text-green-400'}`}>
                 {activeAgentId === AGENT_ID ? 'Processing' : 'Ready'}

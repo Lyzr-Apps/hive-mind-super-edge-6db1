@@ -94,7 +94,7 @@ export default function ConversationHistory({ conversations, onNewChat, onLoadCo
               <RiChat1Line className="w-12 h-12 text-muted-foreground mb-4" />
               <h3 className="font-semibold text-foreground mb-1">No conversations found</h3>
               <p className="text-sm text-muted-foreground max-w-sm">
-                {search ? 'Try a different search term.' : 'Start chatting with Jarvis to build your history.'}
+                {search ? 'Try a different search term.' : 'Start chatting with Nyx to build your history.'}
               </p>
             </CardContent>
           </Card>
@@ -133,7 +133,7 @@ export default function ConversationHistory({ conversations, onNewChat, onLoadCo
                       <div className="space-y-2 max-h-60 overflow-y-auto">
                         {conv.messages.map((msg, i) => (
                           <div key={i} className={`text-xs p-2 rounded-lg ${msg.role === 'user' ? 'bg-primary/10 text-primary ml-8' : 'bg-secondary text-foreground mr-8'}`}>
-                            <span className="font-semibold">{msg.role === 'user' ? 'You' : 'Jarvis'}:</span>{' '}
+                            <span className="font-semibold">{msg.role === 'user' ? 'You' : 'Nyx'}:</span>{' '}
                             {msg.content.slice(0, 300)}{msg.content.length > 300 ? '...' : ''}
                           </div>
                         ))}

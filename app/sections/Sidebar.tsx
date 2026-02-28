@@ -12,9 +12,12 @@ import {
   RiMenuUnfoldLine,
   RiLogoutBoxRLine,
   RiHexagonLine,
+  RiSpyLine,
+  RiBarChartBoxLine,
+  RiCalendarEventLine,
 } from 'react-icons/ri'
 
-export type ViewType = 'chat' | 'knowledge' | 'history' | 'pinned'
+export type ViewType = 'chat' | 'knowledge' | 'history' | 'pinned' | 'rivals' | 'analytics' | 'events'
 
 interface SidebarProps {
   activeView: ViewType
@@ -26,6 +29,9 @@ interface SidebarProps {
 
 const navItems: { view: ViewType; label: string; icon: React.ReactNode }[] = [
   { view: 'chat', label: 'Dashboard', icon: <RiMessage3Line className="w-5 h-5" /> },
+  { view: 'analytics', label: 'Analytics', icon: <RiBarChartBoxLine className="w-5 h-5" /> },
+  { view: 'events', label: 'Events', icon: <RiCalendarEventLine className="w-5 h-5" /> },
+  { view: 'rivals', label: 'Rival Intel', icon: <RiSpyLine className="w-5 h-5" /> },
   { view: 'knowledge', label: 'Knowledge Base', icon: <RiDatabase2Line className="w-5 h-5" /> },
   { view: 'history', label: 'History', icon: <RiHistoryLine className="w-5 h-5" /> },
   { view: 'pinned', label: 'Pinned', icon: <RiPushpinLine className="w-5 h-5" /> },
@@ -49,7 +55,7 @@ export default function Sidebar({ activeView, onViewChange, collapsed, onToggleC
         <div className="px-4 pb-3">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
-            <span className="text-xs text-muted-foreground">Jarvis Online</span>
+            <span className="text-xs text-muted-foreground">Nyx Online</span>
           </div>
         </div>
       )}
